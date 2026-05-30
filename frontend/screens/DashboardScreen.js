@@ -20,10 +20,11 @@ export default function DashboardScreen({ navigation }) {
   useEffect(() => {
     const fetchLiveRate = async () => {
       try {
-        const response = await fetch('https://instaremit.onrender.com/transactions/');
+        // Fetching real-time market data
+        const response = await fetch('https://open.er-api.com/v6/latest/USD');
         const data = await response.json();
         if (data && data.rates && data.rates.INR) {
-          setExchangeRate(data.rates.INR); // Overwrites 83.50 with the real-time market rate
+          setExchangeRate(data.rates.INR); 
         }
       } catch (error) {
         console.error("Failed to connect to currency market. Using fallback rate.");
@@ -52,8 +53,8 @@ export default function DashboardScreen({ navigation }) {
   // THE PYTHON API CONNECTION BRIDGE
   const handleTransferSubmit = async () => {
     try {
-      // Send the data to your local Python Server
-      const response = await fetch('http://127.0.0.1:8000/transactions/', {
+      // Sending data to your LIVE Render Server
+      const response = await fetch('https://instaremit.onrender.com/transactions/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -71,7 +72,7 @@ export default function DashboardScreen({ navigation }) {
       }
     } catch (error) {
       console.error(error);
-      alert("Network Error: Is your Python server running?");
+      alert("Network Error: Could not connect to the cloud server.");
     }
   };
 
@@ -457,7 +458,7 @@ const styles = StyleSheet.create({
   avatarPlaceholder: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#E2E8F0', justifyContent: 'center', alignItems: 'center', marginRight: 12 },
   avatarText: { fontSize: 20 },
   greetingText: { fontSize: 16, color: '#FFFFFF', fontWeight: '500' },
-  bellIcon: { fontSize: 22, color: '#FFFFFF', backgroundColor: '#E53E3E', borderRadius: 12, overflow: 'hidden' }, // Mocking the red notification badge
+  bellIcon: { fontSize: 22, color: '#FFFFFF', backgroundColor: '#E53E3E', borderRadius: 12, overflow: 'hidden' }, 
   balanceLabel: { color: '#E2E8F0', fontSize: 14, marginBottom: 8 },
   balanceRowCenter: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
   balanceAmount: { color: '#FFFFFF', fontSize: 36, fontWeight: '700', marginRight: 12 },
@@ -499,10 +500,12 @@ const styles = StyleSheet.create({
   rateBanner: { backgroundColor: '#EBF8FF', padding: 12, borderRadius: 8, marginBottom: 24, alignItems: 'center' },
   rateText: { color: '#0047AB', fontWeight: '600', fontSize: 14 },
   summaryCard: { backgroundColor: '#FAFAFA', borderWidth: 1, borderColor: '#EDF2F7', borderRadius: 12, padding: 20, marginTop: 10 },
+  summaryTitle: { fontSize: 16, fontWeight: '600', color: '#1A202C', marginBottom: 16 },
   summaryRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 12 },
   summaryText: { fontSize: 14, color: '#4A5568' },
   summaryTextBold: { fontSize: 14, fontWeight: '600', color: '#1A202C' },
   summaryDivider: { height: 1, backgroundColor: '#E2E8F0', marginVertical: 12 },
+  summarySubText: { fontSize: 12, color: '#718096', marginTop: 4 },
   textGreenLg: { color: '#38A169', fontSize: 18, fontWeight: '700' },
   paymentOptionBox: { borderWidth: 1, borderColor: '#E2E8F0', borderRadius: 12, padding: 16, marginBottom: 16 },
   paymentOptionHeader: { flexDirection: 'row', alignItems: 'center' },

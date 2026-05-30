@@ -5,6 +5,7 @@ from sqlalchemy.orm import declarative_base, sessionmaker, Session
 from datetime import datetime
 import uuid
 import json
+import os
 import urllib.request
 from pydantic import BaseModel
 
@@ -12,7 +13,7 @@ from pydantic import BaseModel
 # 1. DATABASE SETUP
 # ==========================================
 # Swapped to cloud-native PostgreSQL and adjusted the protocol dialect for SQLAlchemy compatibility
-SQLALCHEMY_DATABASE_URL = "postgresql://avnadmin:postgres@pg-112faf3f-tufts-6cbe.l.aivencloud.com:17592/defaultdb?sslmode=require"
+SQLALCHEMY_DATABASE_URL = os.environ.get("DATABASE_URL")
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
